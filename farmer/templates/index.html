@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Predictor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00796b;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #004d40;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Crop Prediction</h2>
+    <form id="crop-form">
+      <label for="N">Nitrogen (N):</label>
+      <input name="N" type="number" step="any" required>
+
+      <label for="P">Phosphorus (P):</label>
+      <input name="P" type="number" step="any" required>
+
+      <label for="K">Potassium (K):</label>
+      <input name="K" type="number" step="any" required>
+
+      <label for="temperature">Temperature (°C):</label>
+      <input name="temperature" type="number" step="any" required>
+
+      <label for="humidity">Humidity (%):</label>
+      <input name="humidity" type="number" step="any" required>
+
+      <label for="ph">pH level:</label>
+      <input name="ph" type="number" step="any" required>
+
+      <label for="rainfall">Rainfall (mm):</label>
+      <input name="rainfall" type="number" step="any" required>
+
+      <button type="submit">Predict</button>
+    </form>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    document.getElementById('crop-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const data = {};
+      for (const el of e.target.elements) {
+        if (el.name) data[el.name] = parseFloat(el.value);
+      }
+      const res = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const { prediction } = await res.json();
+      document.getElementById('result').textContent = 'Predicted crop label: ' + prediction;
+    };
+  </script>
+</body>
+</html>

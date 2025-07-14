@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insurance Charges Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-5">
+    <h2>Insurance Charges Prediction</h2>
+    <form method="post" action="/predict" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" name="age" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Sex</label>
+            <select name="sex" class="form-control" required>
+                <option value="">Select...</option>
+                <option value="0">Female</option>
+                <option value="1">Male</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">BMI</label>
+            <input type="text" name="bmi" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Children</label>
+            <input type="number" name="children" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Smoker</label>
+            <select name="smoker" class="form-control" required>
+                <option value="">Select...</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Region</label>
+            <select name="region" class="form-control" required>
+                <option value="">Select...</option>
+                <option value="0">Southwest</option>
+                <option value="1">Southeast</option>
+                <option value="2">Northwest</option>
+                <option value="3">Northeast</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+        <div class="alert alert-success mt-3">{{ prediction_text }}</div>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+    </script>
+</body>
+</html>
